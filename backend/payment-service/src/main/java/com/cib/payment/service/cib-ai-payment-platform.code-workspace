@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"name": "cib-ai-payment-platform",
+			"path": "../../../../../../../../.."
+		}
+	],
+	"settings": {
+		"java.compile.nullAnalysis.mode": "automatic",
+		"java.configuration.updateBuildConfiguration": "interactive"
+	}
+}

@@ -1,0 +1,19 @@
+# Maven
+target/
+
+# Java
+*.jar
+*.war
+*.class
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Logs
+*.log
+
+# H2
+*.mv.db
+*.trace.db
