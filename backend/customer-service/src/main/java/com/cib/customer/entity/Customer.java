@@ -10,8 +10,6 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String customerId;
-
     private String firstName;
 
     private String lastName;
@@ -22,10 +20,12 @@ public class Customer {
 
     private String address;
 
-    // Banking Fields
+    private String customerId;
+
     private String customerStatus;
 
     private String kycStatus;
+
 
     public Customer() {
     }

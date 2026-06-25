@@ -7,6 +7,7 @@ import com.cib.payment.dto.PaymentResponse;
 import com.cib.payment.dto.TransactionRequest;
 import com.cib.payment.entity.Payment;
 import com.cib.payment.repository.PaymentRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +27,12 @@ public class PaymentService {
             PaymentRequest request) {
 
         if (request.getAmount() <= 0) {
+
             throw new RuntimeException(
                     "Invalid Amount");
         }
+
+        // Validate Accounts
 
         accountClient.getAccount(
                 request.getFromAccount());
@@ -36,13 +40,19 @@ public class PaymentService {
         accountClient.getAccount(
                 request.getToAccount());
 
+        // Debit Source Account
+
         accountClient.debit(
                 request.getFromAccount(),
                 request.getAmount());
 
+        // Credit Destination Account
+
         accountClient.credit(
                 request.getToAccount(),
                 request.getAmount());
+
+        // Create Transaction
 
         TransactionRequest txn =
                 new TransactionRequest();
@@ -59,16 +69,29 @@ public class PaymentService {
         txn.setTransactionType(
                 "TRANSFER");
 
-        transactionClient
-                .createTransaction(txn);
+        transactionClient.createTransaction(
+                txn);
+
+        // Generate IDs
+
+        String paymentId =
+                "PAY-" +
+                        System.currentTimeMillis();
 
         String txnId =
-                "TXN-" + System.currentTimeMillis();
+                "TXN-" +
+                        System.currentTimeMillis();
+
+        // Save Payment
 
         Payment payment =
                 new Payment();
 
-        payment.setTransactionId(txnId);
+        payment.setPaymentId(
+                paymentId);
+
+        payment.setTransactionId(
+                txnId);
 
         payment.setFromAccount(
                 request.getFromAccount());
@@ -79,16 +102,25 @@ public class PaymentService {
         payment.setAmount(
                 request.getAmount());
 
-        payment.setStatus("SUCCESS");
+        payment.setStatus(
+                "SUCCESS");
 
-        paymentRepository.save(payment);
+        paymentRepository.save(
+                payment);
+
+        // Response
 
         PaymentResponse response =
                 new PaymentResponse();
 
-        response.setTransactionId(txnId);
+        response.setPaymentId(
+                paymentId);
 
-        response.setStatus("SUCCESS");
+        response.setTransactionId(
+                txnId);
+
+        response.setStatus(
+                "SUCCESS");
 
         response.setMessage(
                 "Fund Transfer Successful");
@@ -96,15 +128,21 @@ public class PaymentService {
         return response;
     }
 
-    public String paymentStatus(Long id) {
+    public String paymentStatus(
+            Long id) {
+
         return "SUCCESS";
     }
 
-    public String cancelPayment(Long id) {
+    public String cancelPayment(
+            Long id) {
+
         return "Payment Cancelled";
     }
 
-    public String refundPayment(Long id) {
+    public String refundPayment(
+            Long id) {
+
         return "Payment Refunded";
     }
 }

@@ -22,16 +22,16 @@ public class AccountController {
         return service.createAccount(request);
     }
 
-    @GetMapping("/account-number/{accountNumber}")
+    @GetMapping("/account-number")
     public Account getAccount(
-            @PathVariable String accountNumber) {
+            @RequestParam String accountNumber) {
 
         return service.getByAccountNumber(accountNumber);
     }
 
-    // View All Accounts API
     @GetMapping
     public List<Account> getAllAccounts() {
+
         return service.getAllAccounts();
     }
 
@@ -40,7 +40,9 @@ public class AccountController {
             @PathVariable String accountNumber,
             @RequestParam Double amount) {
 
-        return service.debit(accountNumber, amount);
+        return service.debit(
+                accountNumber,
+                amount);
     }
 
     @PutMapping("/credit/{accountNumber}")
@@ -48,6 +50,31 @@ public class AccountController {
             @PathVariable String accountNumber,
             @RequestParam Double amount) {
 
-        return service.credit(accountNumber, amount);
+        return service.credit(
+                accountNumber,
+                amount);
+    }
+
+    @DeleteMapping("/account-number/{accountNumber}")
+    public String deleteAccount(
+            @PathVariable String accountNumber) {
+
+        service.deleteByAccountNumber(accountNumber);
+
+        return "Account deleted successfully";
+    }
+
+    @PostMapping("/freeze/{id}")
+    public String freezeAccount(
+            @PathVariable Long id) {
+
+        return service.freezeAccount(id);
+    }
+
+    @PostMapping("/unfreeze/{id}")
+    public String unfreezeAccount(
+            @PathVariable Long id) {
+
+        return service.unfreezeAccount(id);
     }
 }

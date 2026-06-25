@@ -7,6 +7,8 @@ import com.cib.account.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AccountService {
 
@@ -16,16 +18,13 @@ public class AccountService {
     @Autowired
     private CustomerClient customerClient;
 
-    public Account createAccount(
-            AccountRequest request) {
+    public Account createAccount(AccountRequest request) {
 
         try {
-
             customerClient.getCustomer(
                     request.getCustomerId());
-
-        } catch (Exception ex) {
-
+        }
+        catch (Exception ex) {
             throw new RuntimeException(
                     "Customer does not exist");
         }
@@ -44,9 +43,14 @@ public class AccountService {
         account.setBalance(
                 request.getOpeningBalance());
 
-        account.setAccountStatus("ACTIVE");
-        account.setCurrency("INR");
-        account.setBranchCode("BLR001");
+        account.setAccountStatus(
+                "ACTIVE");
+
+        account.setCurrency(
+                "INR");
+
+        account.setBranchCode(
+                "BLR001");
 
         return repository.save(account);
     }
@@ -54,10 +58,16 @@ public class AccountService {
     public Account getByAccountNumber(
             String accountNumber) {
 
-        return repository.findByAccountNumber(accountNumber)
-                .orElseThrow(() ->
-                        new RuntimeException(
+        return repository
+                .findByAccountNumber(accountNumber)
+                .orElseThrow(
+                        () -> new RuntimeException(
                                 "Account Not Found"));
+    }
+
+    public List<Account> getAllAccounts() {
+
+        return repository.findAll();
     }
 
     public Account debit(
@@ -90,5 +100,46 @@ public class AccountService {
                 account.getBalance() + amount);
 
         return repository.save(account);
+    }
+
+    public void deleteByAccountNumber(
+            String accountNumber) {
+
+        Account account =
+                repository
+                        .findByAccountNumber(accountNumber)
+                        .orElseThrow(
+                                () -> new RuntimeException(
+                                        "Account Not Found"));
+
+        repository.delete(account);
+    }
+
+    public String freezeAccount(Long id) {
+
+        Account account = repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Account Not Found"));
+
+        account.setAccountStatus("FROZEN");
+
+        repository.save(account);
+
+        return "Account Frozen Successfully";
+    }
+
+    public String unfreezeAccount(Long id) {
+
+        Account account = repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Account Not Found"));
+
+        account.setAccountStatus("ACTIVE");
+
+        repository.save(account);
+
+        return "Account Unfrozen Successfully";
     }
 }

@@ -10,11 +10,21 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(
+            name = "payment_id",
+            unique = true,
+            nullable = false)
+    private String paymentId;
+
+    @Column(
+            name = "transaction_id",
+            nullable = false)
     private String transactionId;
 
+    @Column(name = "from_account")
     private String fromAccount;
 
+    @Column(name = "to_account")
     private String toAccount;
 
     private Double amount;
@@ -24,28 +34,27 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(String transactionId, String fromAccount,
-                   String toAccount, Double amount, String status) {
-        this.transactionId = transactionId;
-        this.fromAccount = fromAccount;
-        this.toAccount = toAccount;
-        this.amount = amount;
-        this.status = status;
-    }
-
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(
+            String paymentId) {
+
+        this.paymentId = paymentId;
     }
 
     public String getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(String transactionId) {
+    public void setTransactionId(
+            String transactionId) {
+
         this.transactionId = transactionId;
     }
 
@@ -53,7 +62,9 @@ public class Payment {
         return fromAccount;
     }
 
-    public void setFromAccount(String fromAccount) {
+    public void setFromAccount(
+            String fromAccount) {
+
         this.fromAccount = fromAccount;
     }
 
@@ -61,7 +72,9 @@ public class Payment {
         return toAccount;
     }
 
-    public void setToAccount(String toAccount) {
+    public void setToAccount(
+            String toAccount) {
+
         this.toAccount = toAccount;
     }
 
@@ -69,7 +82,9 @@ public class Payment {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(
+            Double amount) {
+
         this.amount = amount;
     }
 
@@ -77,7 +92,9 @@ public class Payment {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(
+            String status) {
+
         this.status = status;
     }
 }
