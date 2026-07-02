@@ -1,0 +1,33 @@
+<section class="customers-shell">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Customer intelligence</p>
+      <h1>Customer portfolio</h1>
+    </div>
+    <button type="button" class="primary-btn">+ Add customer</button>
+  </header>
+
+  <div class="customer-grid">
+    @for (customer of customers; track customer.account) {
+      <article class="customer-card">
+        <div class="customer-card__top">
+          <div>
+            <h3>{{ customer.name }}</h3>
+            <p>{{ customer.account }}</p>
+          </div>
+          <span class="segment">{{ customer.segment }}</span>
+        </div>
+        <div class="customer-card__body">
+          <div>
+            <span class="label">Balance</span>
+            <strong>{{ customer.balance }}</strong>
+          </div>
+          <div>
+            <span class="label">Status</span>
+            <strong>{{ customer.status }}</strong>
+          </div>
+        </div>
+      </article>
+    }
+  </div>
+</section>

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: transaction-service
+  namespace: cib-bank
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: transaction-service
+
+  template:
+    metadata:
+      labels:
+        app: transaction-service
+
+    spec:
+      containers:
+      - name: transaction-service
+        image: cib/transaction-service:latest
+
+        ports:
+        - containerPort: 8084
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: transaction-service
+  namespace: cib-bank
+
+spec:
+  selector:
+    app: transaction-service
+
+  ports:
+  - port: 8084
+    targetPort: 8084

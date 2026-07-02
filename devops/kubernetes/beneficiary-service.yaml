@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: beneficiary-service
+  namespace: cib-bank
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: beneficiary-service
+
+  template:
+    metadata:
+      labels:
+        app: beneficiary-service
+
+    spec:
+      containers:
+      - name: beneficiary-service
+        image: cib/beneficiary-service:latest
+
+        ports:
+        - containerPort: 8086
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: beneficiary-service
+  namespace: cib-bank
+
+spec:
+  selector:
+    app: beneficiary-service
+
+  ports:
+  - port: 8086
+    targetPort: 8086
+
+  type: ClusterIP

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: scheduled-payment-service
+  namespace: cib-bank
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: scheduled-payment-service
+
+  template:
+    metadata:
+      labels:
+        app: scheduled-payment-service
+
+    spec:
+      containers:
+      - name: scheduled-payment-service
+        image: cib/scheduled-payment-service:latest
+
+        ports:
+        - containerPort: 8096
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: scheduled-payment-service
+  namespace: cib-bank
+
+spec:
+  selector:
+    app: scheduled-payment-service
+
+  ports:
+  - port: 8096
+    targetPort: 8096
+
+  type: ClusterIP

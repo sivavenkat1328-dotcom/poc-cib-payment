@@ -1,0 +1,121 @@
+pipeline {
+
+agent any
+
+tools {
+    jdk 'Java21'
+    maven 'Maven'
+}
+
+environment {
+    DOCKER_REGISTRY = "docker.io"
+    DOCKER_NAMESPACE = "cib"
+}
+
+stages {
+
+    stage('Checkout') {
+        steps {
+            checkout scm
+        }
+    }
+
+    stage('Build') {
+        steps {
+            sh 'mvn clean install -DskipTests'
+        }
+    }
+
+    stage('Unit Test') {
+        steps {
+            sh 'mvn test'
+        }
+    }
+
+    stage('SonarQube Scan') {
+        steps {
+            sh 'mvn sonar:sonar'
+        }
+    }
+
+    stage('Docker Build') {
+        steps {
+
+            sh 'docker build -t cib/discovery-server:latest backend/discovery-server'
+            sh 'docker build -t cib/api-gateway:latest backend/api-gateway'
+
+            sh 'docker build -t cib/customer-service:latest backend/customer-service'
+            sh 'docker build -t cib/account-service:latest backend/account-service'
+            sh 'docker build -t cib/payment-service:latest backend/payment-service'
+            sh 'docker build -t cib/transaction-service:latest backend/transaction-service'
+
+            sh 'docker build -t cib/beneficiary-service:latest backend/beneficiary-service'
+            sh 'docker build -t cib/report-service:latest backend/report-service'
+            sh 'docker build -t cib/dashboard-service:latest backend/dashboard-service'
+            sh 'docker build -t cib/admin-service:latest backend/admin-service'
+
+            sh 'docker build -t cib/ai-service:latest backend/ai-service'
+            sh 'docker build -t cib/fraud-detection-service:latest backend/fraud-detection-service'
+
+            sh 'docker build -t cib/notification-service:latest backend/notification-service'
+            sh 'docker build -t cib/audit-service:latest backend/audit-service'
+            sh 'docker build -t cib/scheduled-payment-service:latest backend/scheduled-payment-service'
+        }
+    }
+
+    stage('Docker Push') {
+        steps {
+
+            sh 'docker push cib/discovery-server:latest'
+            sh 'docker push cib/api-gateway:latest'
+
+            sh 'docker push cib/customer-service:latest'
+            sh 'docker push cib/account-service:latest'
+            sh 'docker push cib/payment-service:latest'
+            sh 'docker push cib/transaction-service:latest'
+
+            sh 'docker push cib/beneficiary-service:latest'
+            sh 'docker push cib/report-service:latest'
+            sh 'docker push cib/dashboard-service:latest'
+            sh 'docker push cib/admin-service:latest'
+
+            sh 'docker push cib/ai-service:latest'
+            sh 'docker push cib/fraud-detection-service:latest'
+
+            sh 'docker push cib/notification-service:latest'
+            sh 'docker push cib/audit-service:latest'
+            sh 'docker push cib/scheduled-payment-service:latest'
+        }
+    }
+
+    stage('Deploy Kubernetes') {
+        steps {
+            sh 'kubectl apply -f devops/kubernetes/'
+        }
+    }
+
+    stage('Deployment Verification') {
+        steps {
+            sh 'kubectl get pods -n cib-bank'
+            sh 'kubectl get svc -n cib-bank'
+        }
+    }
+}
+
+post {
+
+    success {
+        echo 'CIB AI Payment Platform Deployment Successful'
+    }
+
+    failure {
+        echo 'Pipeline Failed'
+    }
+
+    always {
+        cleanWs()
+    }
+}
+
+
+}

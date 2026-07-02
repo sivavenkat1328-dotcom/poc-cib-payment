@@ -1,0 +1,73 @@
+.login-shell {
+  min-height: 80vh;
+  display: grid;
+  place-items: center;
+}
+
+.login-card {
+  width: min(100%, 920px);
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  background: #fff;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+}
+
+.login-card__hero {
+  padding: 2rem;
+  background: linear-gradient(135deg, #0d47a1 0%, #2563eb 100%);
+  color: #fff;
+}
+
+.login-card__hero h1 {
+  margin: 0.2rem 0 0.5rem;
+  font-size: 1.5rem;
+}
+
+.login-card__hero p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.84);
+}
+
+.login-form {
+  padding: 2rem;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.login-form label {
+  display: grid;
+  gap: 0.35rem;
+  color: #102a43;
+  font-weight: 600;
+}
+
+.login-form input {
+  border: 1px solid #dbe4f0;
+  border-radius: 12px;
+  padding: 0.8rem 0.9rem;
+  font-size: 0.96rem;
+}
+
+.primary-btn {
+  border: none;
+  background: #0d47a1;
+  color: #fff;
+  padding: 0.8rem 1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.text-link {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+@media (max-width: 760px) {
+  .login-card {
+    grid-template-columns: 1fr;
+  }
+}
