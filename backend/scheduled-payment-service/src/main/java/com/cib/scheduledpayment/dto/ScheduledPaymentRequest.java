@@ -3,13 +3,10 @@ package com.cib.scheduledpayment.dto;
 public class ScheduledPaymentRequest {
 
     private String fromAccount;
-
     private String toAccount;
-
     private Double amount;
-
     private String scheduleDate;
-
+    private String executionTime;
     private String frequency;
 
     public String getFromAccount() {
@@ -42,6 +39,14 @@ public class ScheduledPaymentRequest {
 
     public void setScheduleDate(String scheduleDate) {
         this.scheduleDate = scheduleDate;
+    }
+
+    public String getExecutionTime() {
+        return executionTime;
+    }
+
+    public void setExecutionTime(String executionTime) {
+        this.executionTime = executionTime;
     }
 
     public String getFrequency() {

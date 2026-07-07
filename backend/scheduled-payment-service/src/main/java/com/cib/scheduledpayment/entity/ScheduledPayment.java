@@ -21,6 +21,8 @@ public class ScheduledPayment {
 
     private LocalDate scheduleDate;
 
+    private String executionTime;
+
     private String frequency;
 
     private String status;
@@ -61,6 +63,14 @@ public class ScheduledPayment {
 
     public void setScheduleDate(LocalDate scheduleDate) {
         this.scheduleDate = scheduleDate;
+    }
+
+    public String getExecutionTime() {
+        return executionTime;
+    }
+
+    public void setExecutionTime(String executionTime) {
+        this.executionTime = executionTime;
     }
 
     public String getFrequency() {

@@ -2,20 +2,27 @@ package com.cib.fraud.dto;
 
 public class FraudRequest {
 
-    private String accountNumber;
+    private String fromAccount;
+    private String toAccount;
     private Double amount;
+    private String transactionType;
     private String location;
     private String time;
 
-    public FraudRequest() {
+    public String getFromAccount() {
+        return fromAccount;
     }
 
-    public String getAccountNumber() {
-        return accountNumber;
+    public void setFromAccount(String fromAccount) {
+        this.fromAccount = fromAccount;
     }
 
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
+    public String getToAccount() {
+        return toAccount;
+    }
+
+    public void setToAccount(String toAccount) {
+        this.toAccount = toAccount;
     }
 
     public Double getAmount() {
@@ -24,6 +31,14 @@ public class FraudRequest {
 
     public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
     }
 
     public String getLocation() {
